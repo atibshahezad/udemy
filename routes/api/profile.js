@@ -73,7 +73,7 @@ async (req, res) => {
     }
 
     // Build social object
-    profileFields.social = {}
+    profileFields.social = {};
     if (youtube) profileFields.social.youtube = youtube;
     if (twitter) profileFields.social.twitter = twitter;
     if (facebook) profileFields.social.facebook = facebook;
@@ -81,7 +81,7 @@ async (req, res) => {
     if (instagram) profileFields.social.instagram = instagram;
     
     try {
-      let profile = Profile.findOne({ user: req.user.id });
+      let profile = await Profile.findOne({ user: req.user.id });
 
       if(profile) {
           // Update
@@ -95,11 +95,11 @@ async (req, res) => {
       }    
 
       // Create 
-      profile = new profile(profileFields);
+      profile = new Profile(profileFields);
 
-      await Profile.save();
+      await profile.save();
       res.json(profile);
-    } catch(err) {
+    } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
